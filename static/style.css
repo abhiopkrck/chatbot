@@ -1,0 +1,15 @@
+body{background:#0a0a0a;color:#fff;font-family:sans-serif;margin:0;padding:0;display:flex;justify-content:center;align-items:center;height:100vh;}
+#app{width:90%;max-width:800px;background:#1c1c1c;padding:20px;border-radius:15px;box-shadow:0 0 25px #00eaff33;}
+header h1{text-align:center;color:#00eaff;margin:0 0 10px;}
+.status{text-align:center;margin-bottom:10px;color:#aaa;}
+.chat{background:#111;padding:10px;height:40vh;overflow-y:auto;border-radius:10px;margin-bottom:10px;}
+.controls{text-align:center;}
+input{width:80%;padding:10px;margin:5px;border-radius:5px;border:none;background:#222;color:#fff;}
+button{padding:8px 15px;margin:4px;border-radius:5px;border:none;background:#00eaff;color:#000;font-weight:bold;cursor:pointer;}
+button:hover{background:#00ffff;}
+.user-msg{background:#444;padding:5px;margin:5px;border-radius:5px;text-align:right;}
+.jarvis-msg{background:#222;padding:5px;margin:5px;border-radius:5px;text-align:left;}
+#settings-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;}
+#settings-content{background:#2d2d2d;padding:20px;border-radius:10px;width:350px;color:#fff;}
+#settings-content input{width:100%;margin:5px 0;padding:8px;border-radius:5px;border:none;background:#1e1e1e;color:#fff;}
+#settings-content button{width:100%;padding:8px;margin-top:5px;background:#ffa500;color:#000;cursor:pointer;}
