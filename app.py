@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, jsonify
 import webbrowser
 import subprocess
 import threading
-import pyttsx3
 from datetime import datetime
 from bytez import Bytez
+import os
 
 # ---------------- CONFIG -----------------
 BYTEZ_KEY = "ea0e20284203b535479c427e0d609c77"
@@ -12,15 +12,30 @@ sdk = Bytez(BYTEZ_KEY)
 
 chat_model = sdk.model("openai/gpt-4o")
 img_model = sdk.model("google/imagen-4.0-ultra-generate-001")
-
-engine = pyttsx3.init()
-engine.setProperty('rate', 170)
+tts_model = sdk.model("openai/tts-1-hd")  # Bytez TTS
 
 apps = {}
 websites = {}
 img_history = []
 
 app = Flask(__name__)
+
+# ---------------- TTS FUNCTION -----------------
+def speak_text(text):
+    if not text:
+        return
+    output, error = tts_model.run(text)
+    if error:
+        print("TTS Error:", error)
+        return
+    audio_bytes = output[0]
+    with open("output.mp3", "wb") as f:
+        f.write(audio_bytes)
+    # Play audio cross-platform
+    if os.name == "nt":  # Windows
+        os.startfile("output.mp3")
+    else:
+        os.system("mpg123 output.mp3")  # Linux/Mac
 
 # ---------------- ROUTES -----------------
 @app.route("/")
@@ -32,9 +47,10 @@ def send_prompt():
     data = request.json
     prompt = data.get("prompt", "")
 
-    # Handle open apps/websites or YouTube
     response_text = ""
     lprompt = prompt.lower()
+
+    # Handle open apps/websites or YouTube
     if lprompt.startswith("open "):
         name = prompt[5:]
         if name in websites:
@@ -60,8 +76,8 @@ def send_prompt():
         else:
             response_text = output[0]["content"]
 
-    # Speak response in background
-    threading.Thread(target=lambda: engine.say(response_text) or engine.runAndWait()).start()
+    # Speak response in background using Bytez TTS
+    threading.Thread(target=lambda: speak_text(response_text)).start()
 
     return jsonify({"response": response_text})
 
@@ -70,16 +86,11 @@ def generate_image():
     data = request.json
     prompt = data.get("prompt", "")
     
-    # Bytez Imagen-4
     output, error = img_model.run(prompt)
     if error:
         return jsonify({"success": False, "error": str(error)})
 
-    # Get image URL or base64
-    image_url = output[0]["image_url"] if "image_url" in output[0] else None
-    if not image_url:
-        # fallback placeholder
-        image_url = "https://via.placeholder.com/512?text=AI+Image"
+    image_url = output[0].get("image_url", "https://via.placeholder.com/512?text=AI+Image")
 
     entry = {
         "prompt": prompt,
