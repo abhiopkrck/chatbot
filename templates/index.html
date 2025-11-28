@@ -3,12 +3,105 @@
 <head>
   <title>Jarvis AI</title>
   <script src="/static/script.js" defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      background: #0b0f19;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      width: 420px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #00f2ff;
+      text-shadow: 0 0 15px #00f2ff;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    input::placeholder {
+      color: #c0c0c0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      background: #00f2ff;
+      color: #000;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #00c4d4;
+      transform: scale(1.03);
+    }
+
+    #output {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      font-size: 15px;
+      min-height: 80px;
+      text-align: left;
+      border-left: 3px solid #00f2ff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
 </head>
 <body>
+
+  <div class="container">
     <h1>Jarvis AI (GPT-5)</h1>
+
     <input id="prompt" placeholder="Ask something...">
+    
     <button onclick="send()">Send</button>
-   <button onclick="img()">imagegeneration</button>
+    <button onclick="img()">Image Generation</button>
+
     <div id="output"></div>
+  </div>
+
 </body>
 </html>
