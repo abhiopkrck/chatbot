@@ -1,3 +1,5 @@
 Flask
 bytez
 gunicorn
+Flask
+pyttsx3
