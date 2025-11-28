@@ -1,107 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jarvis AI</title>
-  <script src="/static/script.js" defer></script>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      background: #0b0f19;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 40px;
-      width: 420px;
-      border-radius: 18px;
-      text-align: center;
-      box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      color: #00f2ff;
-      text-shadow: 0 0 15px #00f2ff;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    input::placeholder {
-      color: #c0c0c0;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      margin-top: 10px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.3s;
-      background: #00f2ff;
-      color: #000;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #00c4d4;
-      transform: scale(1.03);
-    }
-
-    #output {
-      margin-top: 20px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      font-size: 15px;
-      min-height: 80px;
-      text-align: left;
-      border-left: 3px solid #00f2ff;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-
+<meta charset="utf-8">
+<title>Jarvis AI Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div id="app">
+    <header>
+        <h1>🤖 JARVIS AI</h1>
+    </header>
 
-  <div class="container">
-    <h1>Jarvis AI (GPT-5)</h1>
+    <div class="status">🔹 System: Ready | Voice: Active | AI: Online</div>
 
-    <input id="prompt" placeholder="Ask something...">
-    
-    <button onclick="send()">Send</button>
-    <button onclick="img()">Image Generation</button>
+    <main>
+        <section class="chat">
+            <div id="chat-display"></div>
+        </section>
 
-    <div id="output"></div>
-  </div>
+        <section class="controls">
+            <input id="input-entry" placeholder="Type a command..." />
+            <button onclick="sendPrompt()">Send</button>
+            <button onclick="voiceMode()">🎤 Voice Mode</button>
+            <button id="settings-btn">⚙️ Settings</button>
+            <button onclick="window.location.href='https://chatbot-zxud.onrender.com/'">GO BACK</button>
+        </section>
+    </main>
+</div>
 
+<!-- Settings Modal -->
+<div id="settings-panel">
+    <div id="settings-content">
+        <h2>⚙️ Settings</h2>
+        <h3>Apps</h3>
+        <input type="text" id="app-name" placeholder="App Name">
+        <input type="text" id="app-path" placeholder="App Path">
+        <button onclick="addApp()">Add App</button>
+
+        <h3>Websites</h3>
+        <input type="text" id="web-name" placeholder="Website Name">
+        <input type="text" id="web-url" placeholder="Website URL">
+        <button onclick="addWeb()">Add Website</button>
+
+        <button onclick="closeSettings()">Close</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
