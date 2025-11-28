@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jarvis GPT-5 Assistant</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0b0b0b;
+    font-family: Arial;
+    color: white;
+}
+.container {
+    max-width: 850px;
+    margin: auto;
+    padding: 20px;
+}
+#chat {
+    background: #111;
+    height: 70vh;
+    padding: 15px;
+    overflow-y: scroll;
+    border-radius: 10px;
+}
+.msg {
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 70%;
+}
+.user {
+    background: #0044aa;
+    margin-left: auto;
+}
+.bot {
+    background: #222;
+}
+.controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+input {
+    flex: 1;
+    padding: 12px;
+    background: #111;
+    border: none;
+    color: white;
+    border-radius: 8px;
+}
+button {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #1e90ff;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+#voiceBtn {
+    background: #444;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h2>🤖 Jarvis GPT-5 Assistant</h2>
+
+    <div id="chat"></div>
+
+    <div class="controls">
+        <input id="inputBox" placeholder="Ask Jarvis anything..." />
+        <button onclick="send()">Send</button>
+        <button id="voiceBtn" onclick="startVoice()">🎤</button>
+        <button onclick="genImage()">🖼️</button>
+    </div>
+</div>
+
+
+<script>
+const API = "http://127.0.0.1:5000/api/ask";
+
+function addMsg(text, cls) {
+    let div = document.createElement("div");
+    div.className = "msg " + cls;
+    div.innerHTML = text;
+    document.getElementById("chat").appendChild(div);
+    div.scrollIntoView();
+}
+
+
+async function send() {
+    let msg = document.getElementById("inputBox").value;
+    if (!msg.trim()) return;
+
+    addMsg(msg, "user");
+    document.getElementById("inputBox").value = "";
+
+    let res = await fetch(API, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({prompt: msg})
+    });
+
+    let data = await res.json();
+    addMsg(data.reply, "bot");
+}
+
+
+// --- Voice recognition ---
+function startVoice() {
+    const rec = new webkitSpeechRecognition();
+    rec.lang = "en-US";
+    rec.start();
+
+    rec.onresult = function(e) {
+        let text = e.results[0][0].transcript;
+        document.getElementById("inputBox").value = text;
+        send();
+    };
+}
+
+
+// --- Image Generator ---
+async function genImage() {
+    let prompt = prompt("Enter image prompt:");
+
+    if (!prompt) return;
+
+    addMsg("🖼️ Generating: " + prompt, "user");
+
+    let res = await fetch("http://127.0.0.1:5000/api/image", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({prompt})
+    });
+
+    let data = await res.json();
+
+    if (data.error) {
+        addMsg("Error: " + data.error, "bot");
+    } else {
+        addMsg("<img src='" + data.image + "' width='300'>", "bot");
+    }
+}
+</script>
+
+</body>
+</html>
