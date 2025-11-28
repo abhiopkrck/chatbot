@@ -10,3 +10,6 @@ async function send() {
     let data = await res.json();
     document.getElementById("output").innerText = data.reply;
 }
+function img() {
+    window.location.href = "https://ai-image-generator-6mq5.onrender.com/";
+}
