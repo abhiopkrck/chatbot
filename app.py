@@ -7,7 +7,7 @@ from bytez import Bytez
 import os
 
 # ---------------- CONFIG -----------------
-BYTEZ_KEY = "ea0e20284203b535479c427e0d609c77"
+BYTEZ_KEY = ""
 sdk = Bytez(BYTEZ_KEY)
 
 chat_model = sdk.model("openai/gpt-4o")
